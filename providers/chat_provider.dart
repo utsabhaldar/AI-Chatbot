@@ -1,0 +1,24 @@
+import 'package:fifth_app/models/chat_model.dart';
+import 'package:fifth_app/services/api_service.dart';
+import 'package:flutter/cupertino.dart';
+
+class ChatProvider with ChangeNotifier {
+  List<ChatModel> chatList = [];
+  List<ChatModel> get getChatList {
+    return chatList;
+  }
+
+  void addUserMessage({required String msg}) {
+    chatList.add(ChatModel(msg: msg, chatIndex: 0));
+    notifyListeners();
+  }
+
+  Future<void> sendMessageAadGetAnswers(
+      {required String msg, required String chosenModelId}) async {
+    chatList.addAll(await ApiService.sendMessage(
+      message: msg,
+      modelId: chosenModelId,
+    ));
+    notifyListeners();
+  }
+}
